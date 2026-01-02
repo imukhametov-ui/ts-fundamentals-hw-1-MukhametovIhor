@@ -1,4 +1,8 @@
-// TODO: оголоси та експортуй потрібні типи згідно ТЗ:
-// - BookId: string
-// - Genre: один із літералів "fiction" | "science" | "history" | "fantasy" | "dystopian"
-// - LoanStatus: "available" | "borrowed"
+export type BookStatus = "available" | "borrowed";
+
+export type BookInit = {
+  title?: string;
+  author?: string;
+  year?: number;
+  genre?: string;
+};
