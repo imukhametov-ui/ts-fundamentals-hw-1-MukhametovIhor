@@ -35,21 +35,16 @@ export class Library {
     );
   }
 
-  borrow(bookId: string, personName: string): void {
-    const book = this.items.get(bookId);
-    if (!book) {
-      throw new Error("Book not found");
-    }
-    book.markBorrowed(personName);
-  }
+borrow(bookId: string, personName: string): void {
+  const book = this.getBookOrThrow(bookId);
+  book.markBorrowed(personName);
+}
 
-  return(bookId: string): void {
-    const book = this.items.get(bookId);
-    if (!book) {
-      throw new Error("Book not found");
-    }
-    book.markReturned();
-  }
+return(bookId: string): void {
+  const book = this.getBookOrThrow(bookId);
+  book.markReturned();
+}
+
 
   getBookOrThrow(id: string): Book {
     const book = this.items.get(id);
