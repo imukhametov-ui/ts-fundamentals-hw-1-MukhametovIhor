@@ -1,12 +1,4 @@
-export type BookStatus = "available" | "borrowed";
-
-export type BookOpts = {
-  id: string;
-  title: string;
-  author: string;
-  year: number;
-  genre: string;
-};
+import { BookInit, BookStatus } from "./types";
 
 export class Book {
   public id: string;
@@ -18,12 +10,12 @@ export class Book {
   private status: BookStatus = "available";
   private borrowedBy: string | null = null;
 
-  constructor(opts: BookOpts) {
-    this.id = opts.id;
-    this.title = opts.title;
-    this.author = opts.author;
-    this.year = opts.year;
-    this.genre = opts.genre;
+  constructor(init: BookInit) {
+    this.id = init.id;
+    this.title = init.title;
+    this.author = init.author;
+    this.year = init.year;
+    this.genre = init.genre;
   }
 
   getStatus(): BookStatus {
@@ -32,9 +24,10 @@ export class Book {
 
   markBorrowed(personName: string): void {
     if (this.status === "borrowed") {
-      // borrowedBy тут вже має бути не null
+      // помилка має показувати АКТУАЛЬНОГО позичальника
       throw new Error(`Already borrowed by ${this.borrowedBy}`);
     }
+
     this.status = "borrowed";
     this.borrowedBy = personName;
   }
@@ -43,11 +36,13 @@ export class Book {
     if (this.status === "available") {
       throw new Error("Already available");
     }
+
     this.status = "available";
     this.borrowedBy = null;
   }
 
   getInfo(): string {
+    // саме довге тире — (em dash)
     const base = `${this.title} — ${this.author} (${this.year}), ${this.genre}`;
 
     if (this.status === "available") {
