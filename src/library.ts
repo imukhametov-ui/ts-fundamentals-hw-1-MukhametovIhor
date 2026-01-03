@@ -3,14 +3,14 @@ import { Book } from "./book";
 export class Library {
   private items = new Map<string, Book>();
 
-  add(item: Book) {
+  add(item: Book): void {
     if (this.items.has(item.id)) {
       throw new Error("Item already exists");
     }
     this.items.set(item.id, item);
   }
 
-  remove(id: string) {
+  remove(id: string): void {
     const book = this.getBookOrThrow(id);
 
     if (book.getStatus() === "borrowed") {
@@ -28,21 +28,23 @@ export class Library {
     return this.listAll().filter((b) => b.getStatus() === "available");
   }
 
-  borrow(bookId: string, personName: string) {
+  borrow(bookId: string, personName: string): void {
     const book = this.getBookOrThrow(bookId);
-    // Делегуємо в Book — він кидає "Already borrowed by <name>"
+    // делегуємо в Book — він сам кине "Already borrowed by X"
     book.markBorrowed(personName);
   }
 
-  return(bookId: string) {
+  return(bookId: string): void {
     const book = this.getBookOrThrow(bookId);
-    // Делегуємо в Book — він кидає "Already available"
+    // делегуємо в Book — він сам кине "Already available"
     book.markReturned();
   }
 
   getBookOrThrow(id: string): Book {
     const book = this.items.get(id);
-    if (!book) throw new Error("Book not found");
+    if (!book) {
+      throw new Error("Book not found");
+    }
     return book;
   }
 }
