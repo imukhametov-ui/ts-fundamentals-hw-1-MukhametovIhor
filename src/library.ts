@@ -1,7 +1,6 @@
 import { Book } from "./book";
 
 export class Library {
-  // Зручно зберігати по id
   private items = new Map<string, Book>();
 
   add(item: Book) {
@@ -14,7 +13,6 @@ export class Library {
   remove(id: string) {
     const book = this.getBookOrThrow(id);
 
-    // якщо Book має getStatus()
     if (book.getStatus() === "borrowed") {
       throw new Error("Cannot remove borrowed item");
     }
@@ -32,7 +30,6 @@ export class Library {
 
   borrow(bookId: string, personName: string) {
     const book = this.getBookOrThrow(bookId);
-    // ВАЖЛИВО: не ловити помилку, щоб Vitest її побачив
     book.markBorrowed(personName);
   }
 
