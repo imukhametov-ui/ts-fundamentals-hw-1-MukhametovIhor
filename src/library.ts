@@ -30,17 +30,17 @@ export class Library {
 
   borrow(bookId: string, personName: string): void {
     const book = this.getBookOrThrow(bookId);
-    // делегуємо в Book — він сам кине "Already borrowed by X"
+    // делегуємо в Book → має кинути "Already borrowed by X"
     book.markBorrowed(personName);
   }
 
   return(bookId: string): void {
     const book = this.getBookOrThrow(bookId);
-    // делегуємо в Book — він сам кине "Already available"
+    // делегуємо в Book → має кинути "Already available"
     book.markReturned();
   }
 
-  getBookOrThrow(id: string): Book {
+  private getBookOrThrow(id: string): Book {
     const book = this.items.get(id);
     if (!book) {
       throw new Error("Book not found");
