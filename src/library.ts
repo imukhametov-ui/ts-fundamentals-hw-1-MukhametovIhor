@@ -30,11 +30,13 @@ export class Library {
 
   borrow(bookId: string, personName: string) {
     const book = this.getBookOrThrow(bookId);
+    // Делегуємо в Book — він кидає "Already borrowed by <name>"
     book.markBorrowed(personName);
   }
 
   return(bookId: string) {
     const book = this.getBookOrThrow(bookId);
+    // Делегуємо в Book — він кидає "Already available"
     book.markReturned();
   }
 
