@@ -1,27 +1,24 @@
 import { Book } from "./book";
 
 export class Library {
-  private items: Map<string, Book>;
+  // Зручно зберігати по id
+  private items = new Map<string, Book>();
 
-  constructor() {
-    this.items = new Map();
-  }
-
-  add(item: Book): void {
+  add(item: Book) {
     if (this.items.has(item.id)) {
       throw new Error("Item already exists");
     }
     this.items.set(item.id, item);
   }
 
-  remove(id: string): void {
-    const book = this.items.get(id);
-    if (!book) {
-      throw new Error("Book not found");
-    }
+  remove(id: string) {
+    const book = this.getBookOrThrow(id);
+
+    // якщо Book має getStatus()
     if (book.getStatus() === "borrowed") {
       throw new Error("Cannot remove borrowed item");
     }
+
     this.items.delete(id);
   }
 
@@ -30,27 +27,23 @@ export class Library {
   }
 
   listAvailable(): Book[] {
-    return this.listAll().filter(
-      (b) => b.getStatus() === "available"
-    );
+    return this.listAll().filter((b) => b.getStatus() === "available");
   }
 
-borrow(bookId: string, personName: string): void {
-  const book = this.getBookOrThrow(bookId);
-  book.markBorrowed(personName);
-}
+  borrow(bookId: string, personName: string) {
+    const book = this.getBookOrThrow(bookId);
+    // ВАЖЛИВО: не ловити помилку, щоб Vitest її побачив
+    book.markBorrowed(personName);
+  }
 
-return(bookId: string): void {
-  const book = this.getBookOrThrow(bookId);
-  book.markReturned();
-}
-
+  return(bookId: string) {
+    const book = this.getBookOrThrow(bookId);
+    book.markReturned();
+  }
 
   getBookOrThrow(id: string): Book {
     const book = this.items.get(id);
-    if (!book) {
-      throw new Error("Book not found");
-    }
+    if (!book) throw new Error("Book not found");
     return book;
   }
 }
