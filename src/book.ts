@@ -30,31 +30,28 @@ export class Book {
     return this.status;
   }
 
-  markBorrowed(personName: string): void {
+  markBorrowed(personName: string) {
     if (this.status === "borrowed") {
+      // borrowedBy тут вже має бути встановлений
       throw new Error(`Already borrowed by ${this.borrowedBy}`);
     }
-
     this.status = "borrowed";
     this.borrowedBy = personName;
   }
 
-  markReturned(): void {
+  markReturned() {
     if (this.status === "available") {
       throw new Error("Already available");
     }
-
     this.status = "available";
     this.borrowedBy = null;
   }
 
   getInfo(): string {
     const base = `${this.title} — ${this.author} (${this.year}), ${this.genre}`;
-
     if (this.status === "available") {
       return `${base} [Available]`;
     }
-
     return `${base} [Borrowed by ${this.borrowedBy}]`;
   }
 }
