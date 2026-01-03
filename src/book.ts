@@ -48,10 +48,13 @@ export class Book {
   }
 
   getInfo(): string {
+    // ВАЖЛИВО: тут EM DASH — (U+2014), не дефіс "-"
     const base = `${this.title} — ${this.author} (${this.year}), ${this.genre}`;
+
     if (this.status === "available") {
       return `${base} [Available]`;
     }
+
     return `${base} [Borrowed by ${this.borrowedBy}]`;
   }
 }
