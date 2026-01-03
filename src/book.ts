@@ -9,11 +9,11 @@ export type BookOpts = {
 };
 
 export class Book {
-  id: string;
-  title: string;
-  author: string;
-  year: number;
-  genre: string;
+  public id: string;
+  public title: string;
+  public author: string;
+  public year: number;
+  public genre: string;
 
   private status: BookStatus = "available";
   private borrowedBy: string | null = null;
@@ -30,16 +30,16 @@ export class Book {
     return this.status;
   }
 
-  markBorrowed(personName: string) {
+  markBorrowed(personName: string): void {
     if (this.status === "borrowed") {
-      // borrowedBy тут вже має бути встановлений
+      // borrowedBy тут вже має бути не null
       throw new Error(`Already borrowed by ${this.borrowedBy}`);
     }
     this.status = "borrowed";
     this.borrowedBy = personName;
   }
 
-  markReturned() {
+  markReturned(): void {
     if (this.status === "available") {
       throw new Error("Already available");
     }
@@ -48,7 +48,6 @@ export class Book {
   }
 
   getInfo(): string {
-    // ВАЖЛИВО: тут EM DASH — (U+2014), не дефіс "-"
     const base = `${this.title} — ${this.author} (${this.year}), ${this.genre}`;
 
     if (this.status === "available") {
