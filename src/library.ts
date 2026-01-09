@@ -1,7 +1,7 @@
 import { Book } from "./book";
 
 export class Library {
-  private items = new Map<string, Book>();
+  private items: Map<string, Book> = new Map<string, Book>();
 
   add(item: Book): void {
     if (this.items.has(item.id)) {
@@ -30,13 +30,11 @@ export class Library {
 
   borrow(bookId: string, personName: string): void {
     const book = this.getBookOrThrow(bookId);
-    // делегуємо в Book → має кинути "Already borrowed by X"
     book.markBorrowed(personName);
   }
 
   return(bookId: string): void {
     const book = this.getBookOrThrow(bookId);
-    // делегуємо в Book → має кинути "Already available"
     book.markReturned();
   }
 
