@@ -1,121 +1,96 @@
-import { Library } from "./library";
-import { Book } from "./book";
+// src/main.ts
 
+import { Book } from "./book";
+import { Library } from "./library";
+
+// Створення бібліотеки
 const library = new Library();
 
-function logSection(title: string) {
-  console.log(`\n=== ${title} ===`);
-}
+// Створення книг
+const book1 = new Book("1", "1984", "George Orwell", 1949, "dystopian");
+const book2 = new Book("2", "The Hobbit", "J.R.R. Tolkien", 1937, "fantasy");
+const book3 = new Book("3", "A Brief History of Time", "Stephen Hawking", 1988, "science");
+const book4 = new Book("4", "The Great Gatsby", "F. Scott Fitzgerald", 1925, "fiction");
 
-function logBooks(title: string) {
-  logSection(title);
-  for (const b of library.listAll()) {
-    console.log(b.getInfo());
-  }
-}
-
-function logAvailable(title: string) {
-  logSection(title);
-  for (const b of library.listAvailable()) {
-    console.log(b.getInfo());
-  }
-}
-
-// 1) Створюємо книги
-const book1 = new Book({
-  id: "1",
-  title: "The Hobbit",
-  author: "J.R.R. Tolkien",
-  year: 1937,
-  genre: "fantasy",
-});
-
-const book2 = new Book({
-  id: "2",
-  title: "1984",
-  author: "George Orwell",
-  year: 1949,
-  genre: "dystopian",
-});
-
-const book3 = new Book({
-  id: "3",
-  title: "A Brief History of Time",
-  author: "Stephen Hawking",
-  year: 1988,
-  genre: "science",
-});
-
-// 2) Додаємо у бібліотеку
+// Додавання книг до бібліотеки
+console.log("=== Додавання книг до бібліотеки ===");
 library.add(book1);
 library.add(book2);
 library.add(book3);
+library.add(book4);
+console.log("Усі книги додані успішно!\n");
 
-// 3) Перевірка помилки дубля
-try {
-  console.log("\n→ Try to add duplicate (id=2): expect 'Item already exists'");
-  library.add(book2);
-} catch (e) {
-  console.log("Expected error:", (e as Error).message);
-}
+// Виведення всіх книг
+console.log("=== Список усіх книг ===");
+library.listAll().forEach(book => console.log(book.getInfo()));
+console.log();
 
-logBooks("All books (after add)");
+// Позичення книги
+console.log("=== Позичення книги '1984' користувачу Іван ===");
+library.borrow("1", "Іван");
+console.log("Книгу позичено успішно!\n");
 
-// 4) Позичаємо книгу 1 Alice
-console.log("\n→ Borrow book id=1 by 'Alice'");
-library.borrow("1", "Alice");
-logBooks("After borrowing book 1");
-logAvailable("Available books (book 1 must be absent)");
+// Виведення оновленого списку
+console.log("=== Оновлений список усіх книг ===");
+library.listAll().forEach(book => console.log(book.getInfo()));
+console.log();
 
-// 5) Повторна позика тієї ж книги — очікуємо 'Already borrowed by <name>'
-try {
-  console.log(
-    "\n→ Borrow book id=1 again by 'Bob': expect 'Already borrowed by Alice'"
-  );
-  library.borrow("1", "Bob");
-} catch (e) {
-  console.log("Expected error:", (e as Error).message);
-}
+// Виведення доступних книг
+console.log("=== Список доступних книг ===");
+library.listAvailable().forEach(book => console.log(book.getInfo()));
+console.log();
 
-// 6) Повертаємо книгу 1
-console.log("\n→ Return book id=1");
+// Повернення книги
+console.log("=== Повернення книги '1984' ===");
 library.return("1");
-logBooks("After returning book 1");
-logAvailable("Available books (book 1 must be present)");
+console.log("Книгу повернено успішно!\n");
 
-// 7) Повторне повернення — очікуємо 'Already available'
-try {
-  console.log("\n→ Return book id=1 again: expect 'Already available'");
-  library.return("1");
-} catch (e) {
-  console.log("Expected error:", (e as Error).message);
-}
+// Виведення списку після повернення
+console.log("=== Список після повернення ===");
+library.listAll().forEach(book => console.log(book.getInfo()));
+console.log();
 
-// 8) Видалення книги 2
-console.log("\n→ Remove book id=2");
+// Видалення книги
+console.log("=== Видалення книги 'The Hobbit' ===");
 library.remove("2");
-logBooks("After removing book 2");
+console.log("Книгу видалено успішно!\n");
 
-// 9) Видалення неіснуючої — очікуємо 'Book not found'
-try {
-  console.log("\n→ Remove non-existing book id=999: expect 'Book not found'");
-  library.remove("999");
-} catch (e) {
-  console.log("Expected error:", (e as Error).message);
-}
+// Фінальний список
+console.log("=== Фінальний список книг ===");
+library.listAll().forEach(book => console.log(book.getInfo()));
+console.log();
 
-// 10) Позичаємо книгу 3 і пробуємо видалити — очікуємо 'Cannot remove borrowed item'
-console.log("\n→ Borrow book id=3 by 'Charlie'");
-library.borrow("3", "Charlie");
+// Демонстрація помилок
+console.log("=== Демонстрація обробки помилок ===");
 
 try {
-  console.log(
-    "\n→ Remove borrowed book id=3: expect 'Cannot remove borrowed item'"
-  );
-  library.remove("3");
-} catch (e) {
-  console.log("Expected error:", (e as Error).message);
+  library.add(book1);
+} catch (error) {
+  console.log(`Помилка: ${(error as Error).message}`);
 }
 
-logBooks("Final state");
+try {
+  library.borrow("1", "Марія");
+  library.borrow("1", "Петро");
+} catch (error) {
+  console.log(`Помилка: ${(error as Error).message}`);
+}
 
+try {
+  library.return("1");
+  library.return("1");
+} catch (error) {
+  console.log(`Помилка: ${(error as Error).message}`);
+}
+
+try {
+  library.remove("1");
+} catch (error) {
+  console.log(`Помилка: ${(error as Error).message}`);
+}
+
+try {
+  library.borrow("999", "Олена");
+} catch (error) {
+  console.log(`Помилка: ${(error as Error).message}`);
+}

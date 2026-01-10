@@ -1,22 +1,27 @@
-// src/book.ts
-import type { BookInit, LoanStatus, BookId, Genre } from "./types";
+import { BookId, Genre, LoanStatus } from "./types";
 
 export class Book {
-  public id: BookId;
-  public title: string;
-  public author: string;
-  public year: number;
-  public genre: Genre;
+  public readonly id: BookId;
+  public readonly title: string;
+  public readonly author: string;
+  public readonly year: number;
+  public readonly genre: Genre;
 
   private status: LoanStatus = "available";
   private borrowedBy: string | null = null;
 
-  constructor(init: BookInit) {
-    this.id = init.id;
-    this.title = init.title;
-    this.author = init.author;
-    this.year = init.year;
-    this.genre = init.genre;
+  constructor(params: {
+    id: BookId;
+    title: string;
+    author: string;
+    year: number;
+    genre: Genre;
+  }) {
+    this.id = params.id;
+    this.title = params.title;
+    this.author = params.author;
+    this.year = params.year;
+    this.genre = params.genre;
   }
 
   getStatus(): LoanStatus {
@@ -40,8 +45,10 @@ export class Book {
   }
 
   getInfo(): string {
-    const base = `${this.title} - ${this.author} (${this.year}), ${this.genre}`;
-    if (this.status === "available") return `${base} [Available]`;
-    return `${base} [Borrowed by ${this.borrowedBy}]`;
+    if (this.status === "available") {
+      return `${this.title} — ${this.author} (${this.year}), ${this.genre} [Available]`;
+    } else {
+      return `${this.title} — ${this.author} (${this.year}), ${this.genre} [Borrowed by ${this.borrowedBy}]`;
+    }
   }
 }
