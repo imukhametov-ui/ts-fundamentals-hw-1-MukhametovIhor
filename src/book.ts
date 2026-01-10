@@ -1,4 +1,4 @@
-import { BookInit, BookStatus } from "./types";
+import type { BookInit, BookStatus } from "./types";
 
 export class Book {
   public id: string;

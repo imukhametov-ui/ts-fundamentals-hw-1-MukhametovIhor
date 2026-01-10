@@ -1,9 +1,15 @@
+export type BookId = string;
+
+export type Genre = string;
+
 export type BookStatus = "available" | "borrowed";
 
+export type LoanStatus = BookStatus;
+
 export type BookInit = {
-  id: string;
+  id: BookId;
   title: string;
   author: string;
   year: number;
-  genre: string;
+  genre: Genre;
 };
