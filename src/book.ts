@@ -1,13 +1,14 @@
-import type { BookInit, BookStatus } from "./types";
+// src/book.ts
+import type { BookInit, LoanStatus, BookId, Genre } from "./types";
 
 export class Book {
-  public id: string;
+  public id: BookId;
   public title: string;
   public author: string;
   public year: number;
-  public genre: string;
+  public genre: Genre;
 
-  private status: BookStatus = "available";
+  private status: LoanStatus = "available";
   private borrowedBy: string | null = null;
 
   constructor(init: BookInit) {
@@ -18,16 +19,14 @@ export class Book {
     this.genre = init.genre;
   }
 
-  getStatus(): BookStatus {
+  getStatus(): LoanStatus {
     return this.status;
   }
 
   markBorrowed(personName: string): void {
     if (this.status === "borrowed") {
-      // помилка має показувати АКТУАЛЬНОГО позичальника
       throw new Error(`Already borrowed by ${this.borrowedBy}`);
     }
-
     this.status = "borrowed";
     this.borrowedBy = personName;
   }
@@ -36,19 +35,13 @@ export class Book {
     if (this.status === "available") {
       throw new Error("Already available");
     }
-
     this.status = "available";
     this.borrowedBy = null;
   }
 
   getInfo(): string {
-    // саме довге тире — (em dash)
-    const base = `${this.title} — ${this.author} (${this.year}), ${this.genre}`;
-
-    if (this.status === "available") {
-      return `${base} [Available]`;
-    }
-
+    const base = `${this.title} - ${this.author} (${this.year}), ${this.genre}`;
+    if (this.status === "available") return `${base} [Available]`;
     return `${base} [Borrowed by ${this.borrowedBy}]`;
   }
 }
