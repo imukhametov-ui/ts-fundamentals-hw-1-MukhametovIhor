@@ -1,10 +1,14 @@
 export type BookId = string;
 
-export type Genre = string;
+export type Genre =
+  | "fantasy"
+  | "dystopian"
+  | "science"
+  | "fiction";
 
-export type BookStatus = "available" | "borrowed";
+export type LoanStatus = "available" | "borrowed";
 
-export type LoanStatus = BookStatus;
+export type BookStatus = LoanStatus;
 
 export type BookInit = {
   id: BookId;
