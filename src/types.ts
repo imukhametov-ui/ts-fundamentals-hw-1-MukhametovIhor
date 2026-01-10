@@ -1,6 +1,6 @@
 export type BookId = string;
 
-export type Genre = string;
+export type union = string;
 
 export type LoanStatus = "available" | "borrowed";
 
