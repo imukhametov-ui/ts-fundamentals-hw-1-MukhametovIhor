@@ -7,10 +7,37 @@ import { Library } from "./library";
 const library = new Library();
 
 // Створення книг
-const book1 = new Book("1", "1984", "George Orwell", 1949, "dystopian");
-const book2 = new Book("2", "The Hobbit", "J.R.R. Tolkien", 1937, "fantasy");
-const book3 = new Book("3", "A Brief History of Time", "Stephen Hawking", 1988, "science");
-const book4 = new Book("4", "The Great Gatsby", "F. Scott Fitzgerald", 1925, "fiction");
+const book1 = new Book({
+  id: "1",
+  title: "1984",
+  author: "George Orwell",
+  year: 1949,
+  genre: "dystopian"
+});
+
+const book2 = new Book({
+  id: "2",
+  title: "The Hobbit",
+  author: "J.R.R. Tolkien",
+  year: 1937,
+  genre: "fantasy"
+});
+
+const book3 = new Book({
+  id: "3",
+  title: "A Brief History of Time",
+  author: "Stephen Hawking",
+  year: 1988,
+  genre: "science"
+});
+
+const book4 = new Book({
+  id: "4",
+  title: "The Great Gatsby",
+  author: "F. Scott Fitzgerald",
+  year: 1925,
+  genre: "fiction"
+});
 
 // Додавання книг до бібліотеки
 console.log("=== Додавання книг до бібліотеки ===");
@@ -58,39 +85,3 @@ console.log("Книгу видалено успішно!\n");
 // Фінальний список
 console.log("=== Фінальний список книг ===");
 library.listAll().forEach(book => console.log(book.getInfo()));
-console.log();
-
-// Демонстрація помилок
-console.log("=== Демонстрація обробки помилок ===");
-
-try {
-  library.add(book1);
-} catch (error) {
-  console.log(`Помилка: ${(error as Error).message}`);
-}
-
-try {
-  library.borrow("1", "Марія");
-  library.borrow("1", "Петро");
-} catch (error) {
-  console.log(`Помилка: ${(error as Error).message}`);
-}
-
-try {
-  library.return("1");
-  library.return("1");
-} catch (error) {
-  console.log(`Помилка: ${(error as Error).message}`);
-}
-
-try {
-  library.remove("1");
-} catch (error) {
-  console.log(`Помилка: ${(error as Error).message}`);
-}
-
-try {
-  library.borrow("999", "Олена");
-} catch (error) {
-  console.log(`Помилка: ${(error as Error).message}`);
-}
